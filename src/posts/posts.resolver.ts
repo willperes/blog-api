@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
+import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 
@@ -8,27 +9,31 @@ export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
 
   @Mutation('createPost')
-  create(@Args('createPostInput') createPostInput: CreatePostInput) {
+  async create(
+    @Args('createPostInput') createPostInput: CreatePostInput,
+  ): Promise<Post> {
     return this.postsService.create(createPostInput);
   }
 
   @Query('posts')
-  findAll() {
+  async findAll(): Promise<Post[]> {
     return this.postsService.findAll();
   }
 
   @Query('post')
-  findOne(@Args('id') id: number) {
+  async findOne(@Args('id') id: number): Promise<Post | undefined> {
     return this.postsService.findOne(id);
   }
 
   @Mutation('updatePost')
-  update(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
+  update(
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+  ): Promise<Post> {
     return this.postsService.update(updatePostInput.id, updatePostInput);
   }
 
   @Mutation('removePost')
-  remove(@Args('id') id: number) {
+  async remove(@Args('id') id: number): Promise<boolean> {
     return this.postsService.remove(id);
   }
 }

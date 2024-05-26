@@ -1,15 +1,19 @@
 type Post {
-  # Example field (placeholder)
-  exampleField: Int
+  id: Int!
+  author: String!
+  text: String!
+  created_at: String!
+  updated_at: String!
 }
 
 input CreatePostInput {
-  # Example field (placeholder)
-  exampleField: Int
+  author: String!
+  text: String!
 }
 
 input UpdatePostInput {
   id: Int!
+  text: String!
 }
 
 type Query {
@@ -20,5 +24,5 @@ type Query {
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
-  removePost(id: Int!): Post
+  removePost(id: Int!): Boolean!
 }
