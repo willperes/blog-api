@@ -38,10 +38,13 @@ export class PostsService {
     }
 
     const now = new Date(Date.now());
+    // TODO: remove nullish operator when a database is implemented
     const updateData: Post = {
       ...post,
       updated_at: now.toISOString(),
-      text: updatePostInput.text,
+      title: updatePostInput.title ?? post.title,
+      cover_image_url: updatePostInput.cover_image_url ?? post.cover_image_url,
+      text: updatePostInput.text ?? post.text,
     };
 
     const updatedPost = await this.repository.update(id, updateData);

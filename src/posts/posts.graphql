@@ -1,25 +1,49 @@
+type PostAuthor {
+  image_url: String!
+  name: String!
+}
+
 type Post {
   id: Int!
-  author: String!
+  author: PostAuthor!
+  title: String!
+  cover_image_url: String!
   text: String!
   created_at: String!
   updated_at: String!
 }
 
+# Create Post
+
+input CreatePostAuthorInput {
+  image_url: String!
+  name: String!
+}
+
 input CreatePostInput {
-  author: String!
+  author: CreatePostAuthorInput!
+  title: String!
+  cover_image_url: String!
   text: String!
 }
 
+# Update Post
+
 input UpdatePostInput {
   id: Int!
-  text: String!
+  title: String
+  cover_image_url: String
+  text: String
 }
+
+# Queries
 
 type Query {
   posts: [Post]!
   post(id: Int!): Post
 }
+
+# Mutations
 
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!

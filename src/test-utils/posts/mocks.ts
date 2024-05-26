@@ -5,7 +5,12 @@ const MOCKED_UPDATED_DATE = MOCKED_CREATED_DATE + 100_000_000;
 
 const post: Post = {
   id: 1,
-  author: 'Willian Peres',
+  title: 'Post Title',
+  cover_image_url: 'https://foo.com/image.png',
+  author: {
+    image_url: 'https://github.com/willperes.png',
+    name: 'Willian Peres',
+  },
   text: 'This is a post text',
   created_at: new Date(MOCKED_CREATED_DATE).toISOString(),
   updated_at: new Date(MOCKED_CREATED_DATE).toISOString(),

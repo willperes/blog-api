@@ -6,7 +6,13 @@ export class Post {
   id: number;
 
   @Field()
-  author: string;
+  title: string;
+
+  @Field()
+  cover_image_url: string;
+
+  @Field()
+  author: PostAuthor;
 
   @Field()
   text: string;
@@ -16,4 +22,13 @@ export class Post {
 
   @Field()
   updated_at: string;
+}
+
+@ObjectType({ description: 'postAuthor' })
+export class PostAuthor {
+  @Field()
+  image_url: string;
+
+  @Field()
+  name: string;
 }
