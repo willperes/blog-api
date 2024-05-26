@@ -44,7 +44,10 @@ export class PostsService {
       updated_at: now.toISOString(),
       title: updatePostInput.title ?? post.title,
       cover_image_url: updatePostInput.cover_image_url ?? post.cover_image_url,
-      text: updatePostInput.text ?? post.text,
+      elements:
+        updatePostInput.elements?.length > 0
+          ? updatePostInput.elements
+          : post.elements,
     };
 
     const updatedPost = await this.repository.update(id, updateData);

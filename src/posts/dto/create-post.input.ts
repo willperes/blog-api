@@ -1,18 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-
-@InputType()
-export class PostAuthorInput {
-  @Field()
-  image_url: string;
-
-  @Field()
-  name: string;
-}
+import { PostAuthor } from '../entities/post-author.entity';
+import { PostElement } from '../entities/post-element.entity';
 
 @InputType()
 export class CreatePostInput {
   @Field()
-  author: PostAuthorInput;
+  author: PostAuthor;
 
   @Field()
   title: string;
@@ -21,5 +14,5 @@ export class CreatePostInput {
   cover_image_url: string;
 
   @Field()
-  text: string;
+  elements: PostElement[];
 }

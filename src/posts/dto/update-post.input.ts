@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { PostElement } from '../entities/post-element.entity';
 
 @InputType()
 export class UpdatePostInput {
@@ -12,5 +13,5 @@ export class UpdatePostInput {
   cover_image_url?: string;
 
   @Field({ nullable: true })
-  text?: string;
+  elements?: PostElement[];
 }

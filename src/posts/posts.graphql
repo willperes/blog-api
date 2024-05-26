@@ -1,3 +1,15 @@
+enum PostElementType {
+  Title
+  Subtitle
+  Paragraph
+  Image
+}
+
+type PostElement {
+  type: PostElementType!
+  content: String!
+}
+
 type PostAuthor {
   image_url: String!
   name: String!
@@ -8,7 +20,7 @@ type Post {
   author: PostAuthor!
   title: String!
   cover_image_url: String!
-  text: String!
+  elements: [PostElement!]!
   created_at: String!
   updated_at: String!
 }
@@ -20,20 +32,30 @@ input CreatePostAuthorInput {
   name: String!
 }
 
+input CreatePostElementInput {
+  type: PostElementType!
+  content: String!
+}
+
 input CreatePostInput {
   author: CreatePostAuthorInput!
   title: String!
   cover_image_url: String!
-  text: String!
+  elements: [CreatePostElementInput!]!
 }
 
 # Update Post
+
+input UpdatePostElementInput {
+  type: PostElementType!
+  content: String!
+}
 
 input UpdatePostInput {
   id: Int!
   title: String
   cover_image_url: String
-  text: String
+  elements: [UpdatePostElementInput!]
 }
 
 # Queries
