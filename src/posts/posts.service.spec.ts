@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
-import { postMock } from './__mocks__/PostMock';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';
 import { PostsRepositoryImpl } from './posts.repository';
+import { postMocks } from '../test-utils/posts/mocks';
 
 describe('Integration: PostsService', () => {
   let service: PostsService;
@@ -24,11 +24,11 @@ describe('Integration: PostsService', () => {
   function createPostUtil(): Promise<Post> {
     jest
       .spyOn(Date, 'now')
-      .mockImplementation(() => postMock.MOCKED_CREATED_DATE);
+      .mockImplementation(() => postMocks.MOCKED_CREATED_DATE);
 
     const postDTO: CreatePostInput = {
-      author: postMock.post.author,
-      text: postMock.post.text,
+      author: postMocks.post.author,
+      text: postMocks.post.text,
     };
 
     return service.create(postDTO);
@@ -37,17 +37,17 @@ describe('Integration: PostsService', () => {
   test('Creating a new post', async () => {
     // 1) Create a new post
     const createdPost = await createPostUtil();
-    expect(createdPost).toMatchObject(postMock.post);
+    expect(createdPost).toMatchObject(postMocks.post);
 
     // 2) Find the post to assert that the post was created
-    const postQuery = await service.findOne(postMock.post.id);
-    expect(postQuery).toEqual(postMock.post);
+    const postQuery = await service.findOne(postMocks.post.id);
+    expect(postQuery).toEqual(postMocks.post);
   });
 
   test('Updating a post', async () => {
     const updatedText = 'This is an updated post text';
     const postUpdateDTO: UpdatePostInput = {
-      id: postMock.post.id,
+      id: postMocks.post.id,
       text: updatedText,
     };
 
@@ -56,19 +56,19 @@ describe('Integration: PostsService', () => {
 
     jest
       .spyOn(Date, 'now')
-      .mockImplementation(() => postMock.MOCKED_UPDATED_DATE);
+      .mockImplementation(() => postMocks.MOCKED_UPDATED_DATE);
 
     // 2) Update the post
-    const updatedPost = await service.update(postMock.post.id, postUpdateDTO);
+    const updatedPost = await service.update(postMocks.post.id, postUpdateDTO);
     const expectedUpdatedPost: Post = {
-      ...postMock.post,
-      updated_at: new Date(postMock.MOCKED_UPDATED_DATE).toISOString(),
+      ...postMocks.post,
+      updated_at: new Date(postMocks.MOCKED_UPDATED_DATE).toISOString(),
       text: updatedText,
     };
     expect(updatedPost).toEqual(expectedUpdatedPost);
 
     // 3) Verify that the post was updated
-    const postQuery = await service.findOne(postMock.post.id);
+    const postQuery = await service.findOne(postMocks.post.id);
     expect(postQuery).toEqual(expectedUpdatedPost);
   });
 
@@ -77,15 +77,15 @@ describe('Integration: PostsService', () => {
     await createPostUtil();
 
     // 2) Find the post to assert that the post was created
-    const postQuery = await service.findOne(postMock.post.id);
-    expect(postQuery).toEqual(postMock.post);
+    const postQuery = await service.findOne(postMocks.post.id);
+    expect(postQuery).toEqual(postMocks.post);
 
     // 3) Remove the post
-    const removedPost = await service.remove(postMock.post.id);
+    const removedPost = await service.remove(postMocks.post.id);
     expect(removedPost).toBe(true);
 
     // 4) Verify that the post was removed
-    const postQueryAfterRemove = await service.findOne(postMock.post.id);
+    const postQueryAfterRemove = await service.findOne(postMocks.post.id);
     expect(postQueryAfterRemove).toBeUndefined();
   });
 });
