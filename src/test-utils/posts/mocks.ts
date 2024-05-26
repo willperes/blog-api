@@ -1,4 +1,4 @@
-import { Post } from '../entities/post.entity';
+import { Post } from '../../posts/entities/post.entity';
 
 const MOCKED_CREATED_DATE = 1701432000000;
 const MOCKED_UPDATED_DATE = MOCKED_CREATED_DATE + 100_000_000;
@@ -11,7 +11,7 @@ const post: Post = {
   updated_at: new Date(MOCKED_CREATED_DATE).toISOString(),
 };
 
-export const postMock = {
+export const postMocks = {
   MOCKED_CREATED_DATE,
   MOCKED_UPDATED_DATE,
   post,
