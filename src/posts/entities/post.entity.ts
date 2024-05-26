@@ -1,4 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { PostAuthor } from './post-author.entity';
+import { PostElement } from './post-element.entity';
 
 @ObjectType({ description: 'post' })
 export class Post {
@@ -6,10 +8,16 @@ export class Post {
   id: number;
 
   @Field()
-  author: string;
+  title: string;
 
   @Field()
-  text: string;
+  cover_image_url: string;
+
+  @Field()
+  author: PostAuthor;
+
+  @Field()
+  elements: PostElement[];
 
   @Field()
   created_at: string;

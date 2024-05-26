@@ -1,25 +1,71 @@
+enum PostElementType {
+  Title
+  Subtitle
+  Paragraph
+  Image
+}
+
+type PostElement {
+  type: PostElementType!
+  content: String!
+}
+
+type PostAuthor {
+  image_url: String!
+  name: String!
+}
+
 type Post {
   id: Int!
-  author: String!
-  text: String!
+  author: PostAuthor!
+  title: String!
+  cover_image_url: String!
+  elements: [PostElement!]!
   created_at: String!
   updated_at: String!
 }
 
+# Create Post
+
+input CreatePostAuthorInput {
+  image_url: String!
+  name: String!
+}
+
+input CreatePostElementInput {
+  type: PostElementType!
+  content: String!
+}
+
 input CreatePostInput {
-  author: String!
-  text: String!
+  author: CreatePostAuthorInput!
+  title: String!
+  cover_image_url: String!
+  elements: [CreatePostElementInput!]!
+}
+
+# Update Post
+
+input UpdatePostElementInput {
+  type: PostElementType!
+  content: String!
 }
 
 input UpdatePostInput {
   id: Int!
-  text: String!
+  title: String
+  cover_image_url: String
+  elements: [UpdatePostElementInput!]
 }
+
+# Queries
 
 type Query {
   posts: [Post]!
   post(id: Int!): Post
 }
+
+# Mutations
 
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!

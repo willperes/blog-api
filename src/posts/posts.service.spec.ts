@@ -5,6 +5,7 @@ import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';
 import { PostsRepositoryImpl } from './posts.repository';
 import { postMocks } from '../test-utils/posts/mocks';
+import { PostElementType } from './entities/post-element.entity';
 
 describe('Integration: PostsService', () => {
   let service: PostsService;
@@ -28,7 +29,9 @@ describe('Integration: PostsService', () => {
 
     const postDTO: CreatePostInput = {
       author: postMocks.post.author,
-      text: postMocks.post.text,
+      title: postMocks.post.title,
+      cover_image_url: postMocks.post.cover_image_url,
+      elements: postMocks.post.elements,
     };
 
     return service.create(postDTO);
@@ -45,10 +48,20 @@ describe('Integration: PostsService', () => {
   });
 
   test('Updating a post', async () => {
-    const updatedText = 'This is an updated post text';
+    const updatedElements: Post['elements'] = [
+      {
+        type: PostElementType.Title,
+        content: 'Updated content title',
+      },
+    ];
+    const updatedTitle: Post['title'] = 'Updated Title';
+    const updatedCoverImageUrl: Post['cover_image_url'] =
+      'https://foo.com/updated-image.png';
     const postUpdateDTO: UpdatePostInput = {
       id: postMocks.post.id,
-      text: updatedText,
+      title: updatedTitle,
+      cover_image_url: updatedCoverImageUrl,
+      elements: updatedElements,
     };
 
     // 1) Create the post
@@ -63,12 +76,51 @@ describe('Integration: PostsService', () => {
     const expectedUpdatedPost: Post = {
       ...postMocks.post,
       updated_at: new Date(postMocks.MOCKED_UPDATED_DATE).toISOString(),
-      text: updatedText,
+      title: updatedTitle,
+      cover_image_url: updatedCoverImageUrl,
+      elements: updatedElements,
     };
     expect(updatedPost).toEqual(expectedUpdatedPost);
 
     // 3) Verify that the post was updated
     const postQuery = await service.findOne(postMocks.post.id);
+    expect(postQuery).toEqual(expectedUpdatedPost);
+  });
+
+  test('Update only two post fields', async () => {
+    const updatedTitle = 'Updated Title';
+    const updatedElements: Post['elements'] = [
+      {
+        type: PostElementType.Title,
+        content: 'Updated title here',
+      },
+    ];
+    const postUpdateDTO: UpdatePostInput = {
+      id: postMocks.post.id,
+      title: updatedTitle,
+      elements: updatedElements,
+    };
+
+    // 1) Create the post
+    await createPostUtil();
+
+    jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => postMocks.MOCKED_UPDATED_DATE);
+
+    // 2) Update the post
+    const updatedPost = await service.update(postMocks.post.id, postUpdateDTO);
+    const expectedUpdatedPost: Post = {
+      ...postMocks.post,
+      updated_at: new Date(postMocks.MOCKED_UPDATED_DATE).toISOString(),
+      title: updatedTitle,
+      elements: updatedElements,
+    };
+    expect(updatedPost).toEqual(expectedUpdatedPost);
+
+    // 3) Verify that the post was updated
+    const postQuery = await service.findOne(postMocks.post.id);
+    console.log(postQuery);
     expect(postQuery).toEqual(expectedUpdatedPost);
   });
 
