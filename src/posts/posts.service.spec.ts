@@ -120,7 +120,6 @@ describe('Integration: PostsService', () => {
 
     // 3) Verify that the post was updated
     const postQuery = await service.findOne(postMocks.post.id);
-    console.log(postQuery);
     expect(postQuery).toEqual(expectedUpdatedPost);
   });
 
