@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 export enum PostElementType {
-  Title = 'Title',
-  Subtitle = 'Subtitle',
-  Paragraph = 'Paragraph',
-  Image = 'Image',
+  Title = 'title',
+  Subtitle = 'subtitle',
+  Paragraph = 'paragraph',
+  Image = 'image',
 }
 
 @ObjectType({ description: 'postElement' })
