@@ -1,8 +1,8 @@
 enum PostElementType {
-  Title
-  Subtitle
-  Paragraph
-  Image
+  title
+  subtitle
+  paragraph
+  image
 }
 
 type PostElement {
